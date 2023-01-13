@@ -16,7 +16,7 @@ import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     FilterValuesType,
-    removeTodolistAC, setTodos,
+    removeTodolistAC, setTodos, setTodosThunk,
     TodolistDomainType
 } from './state/todolists-reducer'
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
@@ -77,8 +77,7 @@ function App() {
     }, [dispatch]);
 
     useEffect(() => {
-        todolistsAPI.getTodolists()
-            .then(res => dispatch(setTodos(res.data)))
+        dispatch(setTodosThunk)
     }, [])
 
     return (
