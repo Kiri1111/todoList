@@ -5,6 +5,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTyp
 import {AppRootStateType, RootThunkType} from "./store";
 import {Dispatch} from "redux";
 import {useLayoutEffect} from "react";
+import {log} from "util";
 
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK',
@@ -166,7 +167,28 @@ export const updateTaskTC = (todolistId: string, taskId: string, taskStatus: Tas
         }
         todolistsAPI.updateTask(todolistId, taskId, model)
             .then(response => {
-                dispatch(changeTaskStatusAC(taskId, taskStatus, todolistId))
+                if (response.data.resultCode === 0) {
+                    dispatch(changeTaskStatusAC(taskId, taskStatus, todolistId))
+                }
+            })
+    }
+}
+export const updateTaskTitleTC = (todolistId: string, taskId: string, title: string): RootThunkType => (dispatch, getState: () => AppRootStateType) => {
+    const tasks = getState().tasks
+    const task = tasks[todolistId].find(el => el.id === taskId)
+    if (task) {
+        const model: UpdateTaskModelType = {
+            title: title,
+            status: task.status,
+            deadline: task.deadline,
+            description: task.description,
+            priority: task.priority,
+            startDate: task.startDate,
+
+        }
+        todolistsAPI.updateTask(todolistId, taskId, model)
+            .then(response => {
+                dispatch(changeTaskTitleAC(taskId, title, todolistId))
             })
     }
 }

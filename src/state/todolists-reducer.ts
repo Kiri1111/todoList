@@ -97,3 +97,16 @@ export const getTodosThunk = (): RootThunkType => (dispatch) => {
     todolistsAPI.getTodolists()
         .then(res => dispatch(setTodos(res.data)))
 }
+
+export const deleteTodolistTC = (todolistId: string): RootThunkType => async (dispatch) => {
+    const response = await todolistsAPI.deleteTodolist(todolistId)
+    dispatch(removeTodolistAC(todolistId))
+}
+export const createTodolistTC = (title: string): RootThunkType => async (dispatch) => {
+    const response = await todolistsAPI.createTodolist(title)
+    dispatch(addTodolistAC(title))
+}
+export const updateTodolistTitleTC = (todolistId: string, title: string): RootThunkType => async (dispatch) => {
+    const response = await todolistsAPI.updateTodolist(todolistId, title)
+    dispatch(changeTodolistTitleAC(todolistId, title))
+}
