@@ -58,7 +58,6 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     if (props.todolist.filter === 'completed') {
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
-
     return <div>
         <h3><EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}>
