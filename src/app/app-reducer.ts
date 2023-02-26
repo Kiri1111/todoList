@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux'
 import {authAPI} from '../api/todolists-api'
-import {setIsLoggedInAC} from '../features/Login/auth-reducer'
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {setIsLoggedInAC} from "../features/Login/auth-reducer";
 
 const initialState: InitialStateType = {
     status: 'idle',
@@ -60,7 +60,6 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
         } else {
 
         }
-
         dispatch(setAppInitializedAC({isInitialized: true}));
     })
 }
