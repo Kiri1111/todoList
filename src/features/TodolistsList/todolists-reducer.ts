@@ -11,8 +11,6 @@ const slice = createSlice({
     initialState: initialState,
     reducers: {
         removeTodolistAC(state, action: PayloadAction<{ id: string }>) {
-            // const index = state.findIndex(el => el.id === action.payload.id)
-            // state.slice(index, 1)
             return state.filter(tl => tl.id != action.payload.id)
         },
         addTodolistAC(state, action: PayloadAction<{ todolist: TodolistType }>) {
