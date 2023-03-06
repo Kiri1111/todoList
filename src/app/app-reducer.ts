@@ -10,16 +10,11 @@ const initialState: InitialStateType = {
 }
 
 export const initializeAppTC = createAsyncThunk('app/initialization', async (_, {dispatch}) => {
-    try {
-        const res = await authAPI.me()
-        if (res.data.resultCode === 0) {
-            dispatch(setIsLoggedInAC({value: true}))
-        } else {
-            handleServerAppError(res.data, dispatch)
-        }
-    } finally {
-        dispatch(setAppInitializedAC({isInitialized: true}));
-
+    const res = await authAPI.me()
+    if (res.data.resultCode === 0) {
+        dispatch(setIsLoggedInAC({value: true}))
+    } else {
+        handleServerAppError(res.data, dispatch)
     }
 })
 
@@ -33,16 +28,18 @@ const slice = createSlice({
         setAppStatusAC: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
             state.status = action.payload.status
         },
-        setAppInitializedAC: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
-            state.isInitialized = action.payload.isInitialized
-        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(initializeAppTC.fulfilled, (state) => {
+            state.isInitialized = true
+        })
     }
 
 })
 
 export const appReducer = slice.reducer
 
-export const {setAppInitializedAC, setAppStatusAC, setAppErrorAC} = slice.actions
+export const {setAppStatusAC, setAppErrorAC} = slice.actions
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type InitialStateType = {
@@ -53,21 +50,6 @@ export type InitialStateType = {
     // true когда приложение проинициализировалось (проверили юзера, настройки получили и т.д.)
     isInitialized: boolean
 }
-
-// export const initializeAppTC_ = () => async (dispatch: Dispatch) => {
-//     authAPI.me()
-//         .then(res => {
-//             if (res.data.resultCode === 0) {
-//                 dispatch(setIsLoggedInAC({value: true}));
-//             } else {
-//                 handleServerAppError(res.data, dispatch)
-//             }
-//             dispatch(setAppInitializedAC({isInitialized: true}));
-//         })
-// }
-
-
-/////////////types
 
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
