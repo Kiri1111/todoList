@@ -3,13 +3,14 @@ import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, G
 import {FormikHelpers, useFormik} from 'formik'
 import {useSelector} from 'react-redux'
 import {loginTC} from './auth-reducer'
-import {AppRootStateType, useAppDispatch} from '../../app/store'
+import {useAppDispatch} from '../../app/store'
 import {Redirect} from 'react-router-dom'
+import {selectIsLoggedIn} from "./selectors";
 
 export const Login = () => {
-    const dispatch = useAppDispatch()
 
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useSelector(selectIsLoggedIn);
 
     type FormValues = {
         email: string,
@@ -50,7 +51,7 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Redirect to={"/"}/>
     }
-    
+
     return <Grid container justify="center">
         <Grid item xs={4}>
             <form onSubmit={formik.handleSubmit}>

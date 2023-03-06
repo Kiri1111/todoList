@@ -3,7 +3,7 @@ import {todolistsReducer} from '../features/TodolistsList/todolists-reducer';
 import {combineReducers} from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import {appReducer} from './app-reducer'
-import {authReducer} from '../features/Login/auth-reducer'
+import {authReducer} from '../features/Auth/auth-reducer'
 import {configureStore} from "@reduxjs/toolkit";
 import {useDispatch} from "react-redux";
 
@@ -36,3 +36,6 @@ window.store = store;
 
 type AppDispatchType = typeof store.dispatch
 export const useAppDispatch = () => useDispatch<AppDispatchType>()
+
+//// хук для замены dispatch
+
