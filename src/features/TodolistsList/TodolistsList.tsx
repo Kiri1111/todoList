@@ -41,8 +41,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const removeTask = useCallback(function (id: string, todolistId: string) {
         const callBack = bindActionCreators({removeTaskTC}, dispatch)
         callBack.removeTaskTC({taskId: id, todolistId})
-        // const thunk = removeTaskTC({taskId: id, todolistId: todolistId})
-        // dispatch(thunk)
     }, [])
 
     const addTask = useCallback(function (title: string, todolistId: string) {
