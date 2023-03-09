@@ -37,6 +37,10 @@ const slice = createSlice({
 
 })
 
+export const asyncActions = {
+    initializeAppTC
+}
+
 export const appReducer = slice.reducer
 
 export const {setAppStatusAC, setAppErrorAC} = slice.actions

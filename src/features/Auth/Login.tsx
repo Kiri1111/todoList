@@ -2,15 +2,16 @@ import React from 'react'
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@material-ui/core'
 import {FormikHelpers, useFormik} from 'formik'
 import {useSelector} from 'react-redux'
-import {loginTC} from './auth-reducer'
-import {useAppDispatch} from '../../app/store'
+import {useAction, useAppDispatch} from '../../app/store'
 import {Redirect} from 'react-router-dom'
 import {selectIsLoggedIn} from "./selectors";
+import {authActions} from "./index";
 
 export const Login = () => {
 
     const dispatch = useAppDispatch()
     const isLoggedIn = useSelector(selectIsLoggedIn);
+    const {} = useAction(authActions)
 
     type FormValues = {
         email: string,
@@ -38,8 +39,8 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: async (values, formikHelpers: FormikHelpers<FormValues>) => {
-            const action = await dispatch(loginTC(values));
-            if (loginTC.rejected.match(action)) {
+            const action = await dispatch(authActions.loginTC(values));
+            if (authActions.loginTC.rejected.match(action)) {
                 if (action.payload?.fieldErrors) {
                     const err = action.payload?.fieldErrors[0]
                     formikHelpers.setFieldError(err.field, err.error)

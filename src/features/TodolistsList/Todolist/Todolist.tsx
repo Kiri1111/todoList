@@ -7,7 +7,6 @@ import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {TodolistDomainType} from '../todolists-reducer'
 import {useDispatch} from 'react-redux'
-import {fetchTasksTC} from "../tasks-actions";
 import {useAction} from "../../../app/store";
 import {tasksActions, todolistsActions} from "../index";
 
@@ -19,7 +18,7 @@ type PropsType = {
 
 export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
     const {changeTodolistFilterAC, changeTodolistTitleTC, removeTodolistTC} = useAction(todolistsActions)
-    const {addTaskTC, removeTaskTC, updateTaskTC} = useAction(tasksActions)
+    const {addTaskTC, removeTaskTC, updateTaskTC, fetchTasksTC} = useAction(tasksActions)
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
         updateTaskTC({taskId: id, domainModel: {status}, todolistId})
@@ -29,14 +28,11 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         updateTaskTC({taskId: id, domainModel: {title: newTitle}, todolistId})
     }, [])
 
-
-    const dispatch = useDispatch()
     useEffect(() => {
         if (demo) {
             return
         }
-        const thunk = fetchTasksTC(props.todolist.id)
-        dispatch(thunk)
+        fetchTasksTC(props.todolist.id)
     }, [])
 
     const addTask = useCallback((title: string) => {

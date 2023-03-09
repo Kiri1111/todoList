@@ -11,12 +11,12 @@ import {
     Typography
 } from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
-import {TodolistsList} from '../features/TodolistsList/TodolistsList'
+import {TodolistsList} from '../features/TodolistsList'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {useDispatch, useSelector} from 'react-redux'
-import {initializeAppTC} from './app-reducer'
+import {asyncActions} from './app-reducer'
 import {BrowserRouter, Route} from 'react-router-dom'
-import {Login} from '../features/Auth/Login'
+import {Login} from '../features/Auth'
 import {logoutTC} from '../features/Auth/auth-reducer'
 import {selectIsInitialized, selectStatus} from "./selectors";
 import {authSelectors} from "../features/Auth";
@@ -25,7 +25,6 @@ type PropsType = {
     demo?: boolean
 }
 
-
 function App({demo = false}: PropsType) {
     const status = useSelector(selectStatus)
     const isInitialized = useSelector(selectIsInitialized)
@@ -33,7 +32,7 @@ function App({demo = false}: PropsType) {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        dispatch(asyncActions.initializeAppTC())
     }, [])
 
     const logoutHandler = useCallback(() => {
