@@ -3,7 +3,7 @@ import {IconButton, TextField} from '@material-ui/core';
 import {AddBox} from '@material-ui/icons';
 
 type AddItemFormPropsType = {
-    addItem: (title: string) => void
+    addItem: (title: string) => Promise<any>
     disabled?: boolean
 }
 
@@ -12,10 +12,14 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
-    const addItemHandler = () => {
+    const addItemHandler = async () => {
         if (title.trim() !== "") {
-            addItem(title);
-            setTitle("");
+            try {
+                await addItem(title);
+                setTitle("");
+            } catch (e) {
+
+            }
         } else {
             setError("Title is required");
         }
