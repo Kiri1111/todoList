@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Box, Button, FormControl, IconButton, TextField} from '@material-ui/core';
+import {IconButton, TextField} from '@material-ui/core';
 import {AddBox} from '@material-ui/icons';
 
 type AddItemFormPropsType = {
@@ -44,7 +44,7 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
                    label="Title"
                    helperText={error}
         />
-        <IconButton color="primary" onClick={addItemHandler} disabled={disabled}>
+        <IconButton style={{marginLeft: '5px'}} color="primary" onClick={addItemHandler} disabled={disabled}>
             <AddBox/>
         </IconButton>
     </div>

@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux'
 import {AppRootStateType, useAction} from '../../app/store'
 import {TodolistDomainType} from './todolists-reducer'
 import {TasksStateType} from './tasks-reducer'
-import {Grid, Paper} from '@material-ui/core'
+import {Grid} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 import {Redirect} from 'react-router-dom'
@@ -35,19 +35,19 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         <Grid container style={{padding: '20px'}}>
             <AddItemForm addItem={addTodolistTC}/>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
             {
                 todolists.map(tl => {
                     let allTodolistTasks = tasks[tl.id]
 
                     return <Grid item key={tl.id}>
-                        <Paper style={{padding: '10px', width: '300px'}}>
+                        <div style={{width: '300px'}}>
                             <Todolist
                                 todolist={tl}
                                 tasks={allTodolistTasks}
                                 demo={demo}
                             />
-                        </Paper>
+                        </div>
                     </Grid>
                 })
             }

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react'
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm'
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
-import {Button, IconButton} from '@material-ui/core'
+import {Button, IconButton, Paper} from '@material-ui/core'
 import {Delete} from '@material-ui/icons'
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
@@ -60,18 +60,20 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     if (props.todolist.filter === 'completed') {
         tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
-    return <div>
-        <h3><EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}>
-                <Delete/>
-            </IconButton>
+    return <Paper style={{padding: '10px', position: 'relative'}}>
+        <IconButton style={{position: 'absolute', right: '5px', top: '5px'}} onClick={removeTodolist}
+                    disabled={props.todolist.entityStatus === 'loading'}>
+            <Delete/>
+        </IconButton>
+        <h3>
+            <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
         </h3>
         <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === 'loading'}/>
         <div>
             {
-                tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.todolist.id}
-                />)
+                tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.todolist.id}/>)
             }
+            {!tasksForTodolist.length && <div style={{padding: '10px', color: 'gray'}}>Add first task</div>}
         </div>
         <div style={{paddingTop: '10px'}}>
             <Button variant={props.todolist.filter === 'all' ? 'outlined' : 'text'}
@@ -88,6 +90,6 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
                     color={'secondary'}>Completed
             </Button>
         </div>
-    </div>
+    </Paper>
 })
 
