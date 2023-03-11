@@ -6,7 +6,7 @@ import {Delete} from '@material-ui/icons'
 import {Task} from './Task/Task'
 import {TaskStatuses, TaskType} from '../../../api/todolists-api'
 import {TodolistDomainType} from '../todolists-reducer'
-import {useAction} from "../../../app/store";
+import {useAction, useAppDispatch} from "../../../app/store";
 import {tasksActions, todolistsActions} from "../index";
 
 type PropsType = {
@@ -18,7 +18,8 @@ type PropsType = {
 export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
 
     const {changeTodolistFilterAC, changeTodolistTitleTC, removeTodolistTC} = useAction(todolistsActions)
-    const {addTaskTC, fetchTasksTC} = useAction(tasksActions)
+    const {fetchTasksTC} = useAction(tasksActions)
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (demo) {
@@ -28,8 +29,17 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     }, [])
 
     const addTask = useCallback(async (title: string) => {
-        addTaskTC({title, todolistId: props.todolist.id})
-    }, [addTaskTC, props.todolist.id])
+        let thunk = tasksActions.addTaskTC({title, todolistId: props.todolist.id})
+        const resultAction = await dispatch(thunk)
+        if (tasksActions.addTaskTC.rejected.match(resultAction)) {
+            if (resultAction.payload?.fieldErrors?.length) {
+                const errorMessage = resultAction.payload?.fieldErrors[0]
+                throw new Error(errorMessage.error)
+            } else {
+                throw new Error('')
+            }
+        }
+    }, [tasksActions.addTaskTC, props.todolist.id])
 
     const removeTodolist = () => {
         removeTodolistTC(props.todolist.id)

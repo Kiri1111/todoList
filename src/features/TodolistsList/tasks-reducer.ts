@@ -1,4 +1,12 @@
-import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
+import {
+    FieldErrorType,
+    LoginParamsType,
+    TaskPriorities,
+    TaskStatuses,
+    TaskType,
+    todolistsAPI,
+    UpdateTaskModelType
+} from '../../api/todolists-api'
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError} from "../../utils/error-utils";
@@ -27,7 +35,9 @@ export const removeTaskTC = createAsyncThunk('tasks/removeTask', async (param: {
         dispatch(setAppStatusAC({status: 'succeeded'}))
     }
 })
-export const addTaskTC = createAsyncThunk('task/addTask', async (param: { title: string, todolistId: string }, {
+export const addTaskTC = createAsyncThunk<TaskType, { title: string, todolistId: string }, {
+    rejectValue: { errors: Array<string>, fieldErrors?: Array<FieldErrorType> }
+}>('task/addTask', async (param, {
     dispatch,
     rejectWithValue
 }) => {
@@ -39,7 +49,7 @@ export const addTaskTC = createAsyncThunk('task/addTask', async (param: { title:
             return res.data.data.item
         } else {
             handleServerAppError(res.data, dispatch);
-            return rejectWithValue(null)
+            return rejectWithValue({errors: res.data.messages, fieldErrors: res.data.fieldErrors})
         }
     } finally {
 

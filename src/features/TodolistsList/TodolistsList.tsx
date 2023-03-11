@@ -32,9 +32,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         return <Redirect to={"/login"}/>
     }
 
-    const addTodolist = useCallback(async (title: string) => {
+    const addTodolist = async (title: string) => {
         addTodolistTC(title)
-    }, [])
+    }
 
 
     return <>
