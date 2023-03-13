@@ -52,13 +52,19 @@ export const addTodolistTC = createAsyncThunk('todoList/addTodo', async (title: 
         dispatch(setAppStatusAC({status: 'succeeded'}))
     }
 })
+
 export const changeTodolistTitleTC = createAsyncThunk('todoList/changeTitle', async (param: { id: string, title: string }, {
     dispatch,
     rejectWithValue
 }) => {
     try {
         const res = await todolistsAPI.updateTodolist(param.id, param.title)
-        return {id: param.id, title: param.title}
+        if (res.data.resultCode === 0) {
+            return {id: param.id, title: param.title}
+        } else {
+            handleServerAppError(res.data, dispatch)
+            return rejectWithValue(null)
+        }
     } catch (e) {
         handleServerNetworkError(e as any, dispatch);
         return rejectWithValue(null)

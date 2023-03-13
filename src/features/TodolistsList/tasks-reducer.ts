@@ -10,7 +10,7 @@ import {
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {handleServerAppError} from "../../utils/error-utils";
-import {AppRootStateType} from "../../app/store";
+import {AppRootStateType, ThunkError} from "../../app/store";
 import {asyncActions as asyncTodolistsActions} from './todolists-reducer'
 
 const initialState: TasksStateType = {}
@@ -35,9 +35,8 @@ export const removeTaskTC = createAsyncThunk('tasks/removeTask', async (param: {
         dispatch(setAppStatusAC({status: 'succeeded'}))
     }
 })
-export const addTaskTC = createAsyncThunk<TaskType, { title: string, todolistId: string }, {
-    rejectValue: { errors: Array<string>, fieldErrors?: Array<FieldErrorType> }
-}>('task/addTask', async (param, {
+export const addTaskTC = createAsyncThunk<TaskType, { title: string, todolistId: string },
+    ThunkError>('task/addTask', async (param, {
     dispatch,
     rejectWithValue
 }) => {

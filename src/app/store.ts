@@ -7,6 +7,7 @@ import {authReducer} from '../features/Auth/auth-reducer'
 import {configureStore} from "@reduxjs/toolkit";
 import {useDispatch} from "react-redux";
 import {useMemo} from "react";
+import {FieldErrorType} from "../api/todolists-api";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -48,3 +49,7 @@ export function useAction<T extends ActionCreatorsMapObject<any>>(actions: T) {
     }, [])
     return boundActions
 }
+
+//type error
+
+export type ThunkError = { rejectValue: { errors: Array<string>, fieldErrors?: Array<FieldErrorType> } }
