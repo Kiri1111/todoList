@@ -5,7 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import App from './app/App';
 import {store} from './app/store';
 import {Provider} from 'react-redux';
-import {ker9Age} from "./file";
 
 const rerenderEntireTree = () => {
 
@@ -23,7 +22,6 @@ rerenderEntireTree()
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-console.log(ker9Age)
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
     module.hot.accept('./app/App', () => {
